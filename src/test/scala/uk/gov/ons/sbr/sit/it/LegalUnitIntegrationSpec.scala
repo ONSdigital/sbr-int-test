@@ -21,14 +21,13 @@ class LegalUnitIntegrationSpec extends SbrControlIntegrationSpec with GeneratorD
   feature("a Legal Unit can be retrieved") {
     scenario("by Unique Business Reference Number (UBRN)") { fixture =>
       val sampleLegalUnits = LegalUnitScenario.sampleLegalUnits()
-      forAll (Gen.oneOf(sampleLegalUnits.toSeq)) { case (ubrn, expectedJson) =>
-        whenever(sampleLegalUnits.contains(ubrn)) {
-          logger.debug(s"Testing retrieval of legal unit by ubrn [$ubrn]")
-          // TODO change key to (ern, ubrn) and use ern in url (rather than hardcoded 101)
-          val forLegalUnit = s"v1/enterprises/101/periods/${fixture.targetPeriod}/legalunits/$ubrn"
+      forAll (Gen.oneOf(sampleLegalUnits.toSeq)) { case (key, expectedJson) =>
+        whenever(sampleLegalUnits.contains(key)) {
+          logger.debug(s"Testing retrieval of legal unit by ERN [${key.ern}] & UBRN [${key.ubrn}]")
+          val forLegalUnit = s"v1/enterprises/${key.ern}/periods/${fixture.targetPeriod}/legalunits/${key.ubrn}"
 
           whenReady(fixture.relativeUrl(forLegalUnit).withHttpHeaders(ACCEPT -> JSON).get()) { response =>
-            logger.debug(s"Response for ubrn [$ubrn] was [$response]")
+            logger.debug(s"Response for legal unit with ERN [${key.ern}] & UBRN [${key.ubrn}] was [$response]")
             response.status shouldBe OK.code()
             response.body[JsValue] should beJsonMatching(expectedJson)
           }
