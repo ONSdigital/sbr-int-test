@@ -19,7 +19,7 @@ class LegalUnitIntegrationSpec extends SbrControlIntegrationSpec with GeneratorD
   info("So that I can view the Legal Unit variables")
 
   feature("a Legal Unit can be retrieved") {
-    scenario("by Unique Business Reference Number (UBRN)") { fixture =>
+    scenario("by Enterprise Reference Number (ERN) and Unique Business Reference Number (UBRN)") { fixture =>
       val sampleLegalUnits = LegalUnitScenario.sampleLegalUnits()
       forAll (Gen.oneOf(sampleLegalUnits.toSeq)) { case (key, expectedJson) =>
         whenever(sampleLegalUnits.contains(key)) {
