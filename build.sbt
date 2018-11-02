@@ -1,4 +1,4 @@
-name := "sbr-control-api-test"
+name := "sbr-int-test"
 organization := "uk.gov.ons"
 version := "1.0"
 
