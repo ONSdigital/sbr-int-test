@@ -28,6 +28,7 @@ query the relevant API, and confirm that the returned payload matches the expect
 
 [ScalaTest](http://www.scalatest.org/user_guide/generator_driven_property_checks) is used to drive the test,
 and via __forAll__ will repeat the test a number of times in accordance with the configured __PropertyCheckConfig__.
+By default, this value is 10.
 
 
 ### Running Locally
