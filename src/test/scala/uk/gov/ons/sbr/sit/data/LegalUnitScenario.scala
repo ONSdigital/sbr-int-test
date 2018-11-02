@@ -19,8 +19,9 @@ object LegalUnitScenario {
 
   private def makeLegalUnitKey(row: Row): Option[LegalUnitKey] =
     for {
+      ern <- row.get(Csv.ern)
       ubrn <- row.get(Csv.ubrn)
-    } yield LegalUnitKey("101", ubrn)
+    } yield LegalUnitKey(ern, ubrn)
 
   private def csvRows(): Seq[Row] =
     withInputStream(CsvLegalUnit.load())(CsvReader.readByHeader)

@@ -23,6 +23,7 @@ object CsvLegalUnit {
     val addressLine4 = "address4"
     val addressLine5 = "address5"
     val postcode = "postcode"
+    val ern = "ern"
   }
 
   def load(): InputStream =

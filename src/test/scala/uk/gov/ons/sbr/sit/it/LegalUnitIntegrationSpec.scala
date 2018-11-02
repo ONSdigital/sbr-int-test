@@ -27,7 +27,7 @@ class LegalUnitIntegrationSpec extends SbrControlIntegrationSpec with GeneratorD
           val forLegalUnit = s"v1/enterprises/${key.ern}/periods/${fixture.targetPeriod}/legalunits/${key.ubrn}"
 
           whenReady(fixture.relativeUrl(forLegalUnit).withHttpHeaders(ACCEPT -> JSON).get()) { response =>
-            logger.debug(s"Response for legal unit with ERN [${key.ern}] & UBRN [${key.ubrn}] was [$response]")
+            logger.debug(s"Response for legal unit with ERN [${key.ern}] & UBRN [${key.ubrn}] was [${response.status}] with body [${response.body}]")
             response.status shouldBe OK.code()
             response.body[JsValue] should beJsonMatching(expectedJson)
           }
