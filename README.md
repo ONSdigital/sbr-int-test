@@ -16,7 +16,7 @@ This project contains:
 * API tests that establish whether or not client requests against the known dataset achieve the expected results
 
 ##### Populating the Database
-TODO: provide overview of scripts
+_TODO: provide overview of scripts_
 
 ##### Testing the APIs
 
@@ -30,7 +30,35 @@ query the relevant API, and confirm that the returned payload matches the expect
 and via __forAll__ will repeat the test a number of times in accordance with the configured __PropertyCheckConfig__.
 
 
-## License
+### Running Locally
+1. Start a local HBase instance
+
+   ```bin/start-hbase.sh```
+
+2. Start the HBase REST Service
+
+   ```bin/hbase rest start```
+
+3. Populate the database with the test data set
+
+   _TODO: example script usage_
+
+4. Start sbr-control-api
+
+   ```sbt run``` _(in sbr-control-api project directory)_
+
+   Note that your project _conf/application.conf_ must configure _db.hbase-rest_ to point to the local HBase instance
+   started earlier.  This is the default configuration.
+
+5. Run integration tests
+
+   ```sbt clean test``` _(in this project directory)_
+
+   Note that your project _src/test/resources/application.conf_ must configure _api.sbr.control_ to point to the local
+   server started earlier.  This is the default configuration.
+
+
+### License
 
 Copyright © 2018, Office for National Statistics (https://www.ons.gov.uk)
 
