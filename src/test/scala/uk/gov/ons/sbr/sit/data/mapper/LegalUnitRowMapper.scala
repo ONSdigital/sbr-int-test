@@ -2,7 +2,8 @@ package uk.gov.ons.sbr.sit.data.mapper
 
 import play.api.libs.json.JsValue
 import uk.gov.ons.sbr.sit.data._
-import uk.gov.ons.sbr.sit.data.api.ApiLegalUnit.{LegalUnitAddressMandatoryColumns, LegalUnitAddressNumericColumns, LegalUnitNonAddressMandatoryColumns, LegalUnitNonAddressNumericColumns, LegalUnitAddressColumnNames => ApiAddress, LegalUnitNonAddressColumnNames => Api}
+import uk.gov.ons.sbr.sit.data.api.ApiAddress.{ColumnNames => ApiAddress}
+import uk.gov.ons.sbr.sit.data.api.ApiLegalUnit.{LegalUnitNonAddressMandatoryColumns, LegalUnitNonAddressNumericColumns, LegalUnitNonAddressColumnNames => Api}
 import uk.gov.ons.sbr.sit.data.csv.CsvLegalUnit.{ColumnNames => Csv}
 
 object LegalUnitRowMapper extends RowMapper {
@@ -33,18 +34,12 @@ object LegalUnitRowMapper extends RowMapper {
   )
 
   private val nonAddressColumnNameTranslator: Fields => Fields = TranslateColumnNames(NonAddressColumnNameTranslation)
-  private val addressColumnNameTranslator: Fields => Fields = TranslateColumnNames(AddressColumnNameTranslation)
 
   override def asJson(row: Row): Either[ErrorMessage, JsValue] = {
     ProcessFields(nonAddressColumnNameTranslator, LegalUnitNonAddressMandatoryColumns, LegalUnitNonAddressNumericColumns)(row).flatMap { nonAddressFields =>
-      addressAsJson(row).map { address =>
+      AddressRowMapperMaker(AddressColumnNameTranslation).asJson(row).map { address =>
         Values.asJsObject(("address" -> address) +: nonAddressFields)
       }
     }
   }
-
-  private def addressAsJson(row: Row): Either[ErrorMessage, JsValue] =
-    ProcessFields(addressColumnNameTranslator, LegalUnitAddressMandatoryColumns, LegalUnitAddressNumericColumns)(row).map { fields =>
-      Values.asJsObject(fields)
-    }
 }

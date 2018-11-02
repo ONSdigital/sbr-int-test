@@ -25,20 +25,4 @@ object ApiLegalUnit {
 
   val LegalUnitNonAddressNumericColumns: Set[ColumnName] =
     Set(turnover, jobs)
-
-  object LegalUnitAddressColumnNames {
-    val line1 = "line1"
-    val line2 = "line2"
-    val line3 = "line3"
-    val line4 = "line4"
-    val line5 = "line5"
-    val postcode = "postcode"
-  }
-
-  import LegalUnitAddressColumnNames._
-  val LegalUnitAddressMandatoryColumns: Set[ColumnName] =
-    Set(line1, postcode)
-
-  val LegalUnitAddressNumericColumns: Set[ColumnName] =
-    Set.empty
 }
