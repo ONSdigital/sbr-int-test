@@ -42,6 +42,10 @@ object ApiEnterprise {
     }
   }
 
+  object Address {
+    val ContainerName = "address"
+  }
+
   object Columns {
     object Names {
       val ern = "ern"

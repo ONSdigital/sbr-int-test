@@ -6,4 +6,5 @@ package object data {
   type Field = (ColumnName, String)
   type Row = Fields
   type ErrorMessage = String
+  type Ern = String
 }

@@ -3,7 +3,7 @@ package uk.gov.ons.sbr.sit.data.mapper
 import play.api.libs.json.JsValue
 import uk.gov.ons.sbr.sit.data._
 import uk.gov.ons.sbr.sit.data.api.ApiAddress.{ColumnNames => ApiAddress}
-import uk.gov.ons.sbr.sit.data.api.ApiLegalUnit.{LegalUnitNonAddressMandatoryColumns, LegalUnitNonAddressNumericColumns, LegalUnitNonAddressColumnNames => Api}
+import uk.gov.ons.sbr.sit.data.api.ApiLegalUnit.{Address, LegalUnitNonAddressMandatoryColumns, LegalUnitNonAddressNumericColumns, LegalUnitNonAddressColumnNames => Api}
 import uk.gov.ons.sbr.sit.data.csv.CsvLegalUnit.{ColumnNames => Csv}
 
 object LegalUnitRowMapper extends RowMapper {
@@ -38,7 +38,7 @@ object LegalUnitRowMapper extends RowMapper {
   override def asJson(row: Row): Either[ErrorMessage, JsValue] = {
     ProcessFields(nonAddressColumnNameTranslator, LegalUnitNonAddressMandatoryColumns, LegalUnitNonAddressNumericColumns)(row).flatMap { nonAddressFields =>
       AddressRowMapperMaker(AddressColumnNameTranslation).asJson(row).map { address =>
-        Values.asJsObject(("address" -> address) +: nonAddressFields)
+        Values.asJsObject((Address.ContainerName -> address) +: nonAddressFields)
       }
     }
   }

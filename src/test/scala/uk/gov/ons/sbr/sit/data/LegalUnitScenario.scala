@@ -7,7 +7,6 @@ import uk.gov.ons.sbr.sit.data.csv.{CsvLegalUnit, CsvReader}
 import uk.gov.ons.sbr.sit.data.mapper.{LegalUnitRowMapper, RowMapper}
 
 object LegalUnitScenario {
-  type Ern = String
   type Ubrn = String
   case class LegalUnitKey(ern: Ern, ubrn: Ubrn)
 

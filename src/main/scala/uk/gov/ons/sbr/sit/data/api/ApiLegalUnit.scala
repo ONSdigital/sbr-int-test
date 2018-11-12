@@ -19,6 +19,10 @@ object ApiLegalUnit {
     val uprn = "uprn"
   }
 
+  object Address {
+    val ContainerName = "address"
+  }
+
   import LegalUnitNonAddressColumnNames._
   val LegalUnitNonAddressMandatoryColumns: Set[ColumnName] =
     Set(ubrn, name, legalStatus, sic07, birthDate)
