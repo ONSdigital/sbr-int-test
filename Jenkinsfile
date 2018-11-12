@@ -4,7 +4,7 @@
 def artServer = Artifactory.server 'art-p-01'
 def buildInfo = Artifactory.newBuildInfo()
 def distDir = 'build/dist/'
-def agentSbtVersion = 'sbt_1-2-4'
+def agentSbtVersion = 'sbt_1-1-6'
 
 pipeline {
     libraries {
