@@ -1,37 +1,13 @@
 package uk.gov.ons.sbr.sit.it
 
-import com.typesafe.scalalogging.LazyLogging
-import org.scalacheck.Gen
-import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import play.api.libs.json.JsValue
-import play.shaded.ahc.io.netty.handler.codec.http.HttpHeaders.Names.ACCEPT
-import play.shaded.ahc.io.netty.handler.codec.http.HttpHeaders.Values.{APPLICATION_JSON => JSON}
-import play.shaded.ahc.io.netty.handler.codec.http.HttpResponseStatus.OK
 import uk.gov.ons.sbr.sit.data.LegalUnitScenario
-import uk.gov.ons.sbr.sit.it.fixture.SbrControlIntegrationSpec
-import uk.gov.ons.sbr.sit.it.matchers.JsonMatchers.beJsonMatching
+import uk.gov.ons.sbr.sit.data.LegalUnitScenario.LegalUnitKey
 
-class LegalUnitIntegrationSpec extends SbrControlIntegrationSpec with GeneratorDrivenPropertyChecks with LazyLogging {
+class LegalUnitIntegrationSpec extends AbstractIntegrationSpec[LegalUnitKey]("Legal Unit") {
+  override def sampleUnits(): Map[LegalUnitKey, JsValue] =
+    LegalUnitScenario.sampleLegalUnits()
 
-  info("As a SBR user")
-  info("I want to retrieve a Legal Unit")
-  info("So that I can view the Legal Unit variables")
-
-  feature("a Legal Unit can be retrieved") {
-    ignore("by Enterprise Reference Number (ERN) and Unique Business Reference Number (UBRN)") { fixture =>
-      val sampleLegalUnits = LegalUnitScenario.sampleLegalUnits()
-      forAll (Gen.oneOf(sampleLegalUnits.toSeq)) { case (key, expectedJson) =>
-        whenever(sampleLegalUnits.contains(key)) {
-          logger.debug(s"Testing retrieval of legal unit by ERN [${key.ern}] & UBRN [${key.ubrn}]")
-          val forLegalUnit = s"v1/enterprises/${key.ern}/periods/${fixture.targetPeriod}/legalunits/${key.ubrn}"
-
-          whenReady(fixture.relativeUrl(forLegalUnit).withHttpHeaders(ACCEPT -> JSON).get()) { response =>
-            logger.debug(s"Response for legal unit with ERN [${key.ern}] & UBRN [${key.ubrn}] was [${response.status}] with body [${response.body}]")
-            response.status shouldBe OK.code()
-            response.body[JsValue] should beJsonMatching(expectedJson)
-          }
-        }
-      }
-    }
-  }
+  override def urlFor(unitKey: LegalUnitKey, period: String): String =
+    s"v1/enterprises/${unitKey.ern}/periods/$period/legalunits/${unitKey.ubrn}"
 }
