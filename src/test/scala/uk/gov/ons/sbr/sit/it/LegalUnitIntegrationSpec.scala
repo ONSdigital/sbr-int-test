@@ -6,7 +6,7 @@ import uk.gov.ons.sbr.sit.data.LegalUnitScenario.LegalUnitKey
 
 class LegalUnitIntegrationSpec extends AbstractIntegrationSpec[LegalUnitKey]("Legal Unit") {
   override def sampleUnits(): Map[LegalUnitKey, JsValue] =
-    LegalUnitScenario.sampleLegalUnits()
+    LegalUnitScenario.sampleUnits()
 
   override def urlFor(unitKey: LegalUnitKey, period: String): String =
     s"v1/enterprises/${unitKey.ern}/periods/$period/legalunits/${unitKey.ubrn}"

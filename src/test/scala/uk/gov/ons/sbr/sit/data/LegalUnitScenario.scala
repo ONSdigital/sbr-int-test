@@ -1,27 +1,23 @@
 package uk.gov.ons.sbr.sit.data
 
-import play.api.libs.json.JsValue
+import java.io.InputStream
+
+import uk.gov.ons.sbr.sit.data.csv.CsvLegalUnit
 import uk.gov.ons.sbr.sit.data.csv.CsvLegalUnit.{ColumnNames => Csv}
-import uk.gov.ons.sbr.sit.data.csv.ScenarioResource.withInputStream
-import uk.gov.ons.sbr.sit.data.csv.{CsvLegalUnit, CsvReader}
 import uk.gov.ons.sbr.sit.data.mapper.{LegalUnitRowMapper, RowMapper}
 
-object LegalUnitScenario {
+object LegalUnitScenario extends UnitScenario {
   type Ubrn = String
   case class LegalUnitKey(ern: Ern, ubrn: Ubrn)
+  override type UnitKey = LegalUnitKey
 
-  def sampleLegalUnits(): Map[LegalUnitKey, JsValue] =
-    RowMapper(LegalUnitRowMapper)(rowsByLegalUnitKey(csvRows()))
+  override def csvInput(): InputStream = CsvLegalUnit.load()
 
-  private def rowsByLegalUnitKey(rows: Seq[Row]): Map[LegalUnitKey, Row] =
-    KeyedRows(rows, makeLegalUnitKey)
-
-  private def makeLegalUnitKey(row: Row): Option[LegalUnitKey] =
+  override def keyOf(row: Row): Option[LegalUnitKey] =
     for {
       ern <- row.get(Csv.ern)
       ubrn <- row.get(Csv.ubrn)
     } yield LegalUnitKey(ern, ubrn)
 
-  private def csvRows(): Seq[Row] =
-    withInputStream(CsvLegalUnit.load())(CsvReader.readByHeader)
+  override def rowMapper: RowMapper = LegalUnitRowMapper
 }

@@ -1,18 +1,15 @@
 package uk.gov.ons.sbr.sit.data
 
-import play.api.libs.json.JsValue
+import java.io.InputStream
+
+import uk.gov.ons.sbr.sit.data.csv.CsvEnterprise
 import uk.gov.ons.sbr.sit.data.csv.CsvEnterprise.{ColumnNames => Csv}
-import uk.gov.ons.sbr.sit.data.csv.ScenarioResource.withInputStream
-import uk.gov.ons.sbr.sit.data.csv.{CsvEnterprise, CsvReader}
 import uk.gov.ons.sbr.sit.data.mapper.{EnterpriseRowMapper, RowMapper}
 
-object EnterpriseScenario {
-  def sampleEnterprises(): Map[Ern, JsValue] =
-    RowMapper(EnterpriseRowMapper)(rowsByEnterpriseKey(csvRows()))
+object EnterpriseScenario extends UnitScenario {
+  override type UnitKey = Ern
 
-  private def rowsByEnterpriseKey(rows: Seq[Row]): Map[Ern, Row] =
-    KeyedRows(rows, _.get(Csv.ern))
-
-  private def csvRows(): Seq[Row] =
-    withInputStream(CsvEnterprise.load())(CsvReader.readByHeader)
+  override def csvInput(): InputStream = CsvEnterprise.load()
+  override def keyOf(row: Row): Option[Ern] = row.get(Csv.ern)
+  override def rowMapper: RowMapper = EnterpriseRowMapper
 }
