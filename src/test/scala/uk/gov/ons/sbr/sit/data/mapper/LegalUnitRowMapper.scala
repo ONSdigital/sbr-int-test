@@ -35,9 +35,9 @@ object LegalUnitRowMapper extends RowMapper {
   )
 
   override def asJson(row: Row): Either[ErrorMessage, JsValue] = {
-    ProcessFields(topLevelColumnNameTranslator, Columns.mandatory, Columns.numeric)(row).flatMap { nonAddressFields =>
+    ProcessFields(topLevelColumnNameTranslator, Columns.mandatory, Columns.numeric)(row).flatMap { topLevelFields =>
       AddressRowMapperMaker(AddressColumnNameTranslation).asJson(row).map { address =>
-        Values.asJsObject((Address.ContainerName -> address) +: nonAddressFields)
+        Values.asJsObject((Address.ContainerName -> address) +: topLevelFields)
       }
     }
   }
