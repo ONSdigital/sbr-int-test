@@ -1,7 +1,7 @@
 package uk.gov.ons.sbr.sit.data.mapper
 
 import play.api.libs.json.JsValue
-import uk.gov.ons.sbr.sit.data.api.ApiAddress.{ColumnNames => ApiAddress}
+import uk.gov.ons.sbr.sit.data.api.ApiAddress.Columns.{Names => ApiAddress}
 import uk.gov.ons.sbr.sit.data.api.ApiEnterprise
 import uk.gov.ons.sbr.sit.data.api.ApiEnterprise.Columns.{Names => Api}
 import uk.gov.ons.sbr.sit.data.api.ApiEnterprise.Imputed.Columns.{Names => ApiImputed}
