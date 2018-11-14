@@ -8,22 +8,22 @@ import uk.gov.ons.sbr.sit.data.api.ApiEnterprise.Imputed.Columns.{Names => ApiIm
 import uk.gov.ons.sbr.sit.data.api.ApiEnterprise.Turnover.Columns.{Names => ApiTurnover}
 import uk.gov.ons.sbr.sit.data.api.ApiEnterprise.{Address, Imputed, Turnover}
 import uk.gov.ons.sbr.sit.data.csv.CsvEnterprise.{ColumnNames => Csv}
-import uk.gov.ons.sbr.sit.data.{ColumnName, ErrorMessage, Row, TranslateColumnNames}
+import uk.gov.ons.sbr.sit.data._
 
 object EnterpriseRowMapper extends RowMapper {
 
-  private val turnoverColumnNameTranslator = TranslateColumnNames(Map(
+  private val turnoverColumnNameTranslator: Fields => Fields = TranslateColumnNames(Map(
     Csv.containedTurnover -> ApiTurnover.containedTurnover,
     Csv.standardTurnover -> ApiTurnover.standardTurnover,
     Csv.groupTurnover -> ApiTurnover.groupTurnover,
     Csv.apportionedTurnover -> ApiTurnover.apportionedTurnover,
     Csv.enterpriseTurnover -> ApiTurnover.enterpriseTurnover
-  )) _
+  ))
 
-  private val imputedColumnNameTranslator = TranslateColumnNames(Map(
+  private val imputedColumnNameTranslator: Fields => Fields = TranslateColumnNames(Map(
     Csv.imputedEmployees -> ApiImputed.employees,
     Csv.imputedTurnover -> ApiImputed.turnover
-  )) _
+  ))
 
   private val AddressColumnNameTranslation = Map(
     Csv.addressLine1 -> ApiAddress.line1,
@@ -34,7 +34,7 @@ object EnterpriseRowMapper extends RowMapper {
     Csv.postcode -> ApiAddress.postcode
   )
 
-  private val topLevelColumnNameTranslator = TranslateColumnNames(Map(
+  private val topLevelColumnNameTranslator: Fields => Fields = TranslateColumnNames(Map(
     Csv.ern -> Api.ern,
     Csv.entref -> Api.entref,
     Csv.name -> Api.name,
@@ -47,7 +47,7 @@ object EnterpriseRowMapper extends RowMapper {
     Csv.workingProprietors -> Api.workingProprietors,
     Csv.employment -> Api.employment,
     Csv.prn -> Api.prn
-  )) _
+  ))
 
   private val turnoverFieldsProcessor = ProcessFields(turnoverColumnNameTranslator,
     Turnover.Columns.mandatory, Turnover.Columns.numeric) _
@@ -66,7 +66,8 @@ object EnterpriseRowMapper extends RowMapper {
 
       optionalSubObjects = Seq(
         Turnover.ContainerName -> turnoverFields,
-        Imputed.ContainerName -> imputedFields).foldLeft(Seq.empty[(ColumnName, JsValue)]) { case (acc, (name, values)) =>
+        Imputed.ContainerName -> imputedFields
+      ).foldLeft(Seq.empty[(ColumnName, JsValue)]) { case (acc, (name, values)) =>
         if (values.isEmpty) acc else (name, Values.asJsObject(values)) +: acc
       }
     } yield Values.asJsObject((Address.ContainerName, address) +: (optionalSubObjects ++ topLevelFields))
