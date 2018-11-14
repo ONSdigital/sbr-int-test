@@ -8,7 +8,6 @@ import uk.gov.ons.sbr.sit.data.api.ApiLegalUnit.{Address, Columns}
 import uk.gov.ons.sbr.sit.data.csv.CsvLegalUnit.{ColumnNames => Csv}
 
 object LegalUnitRowMapper extends RowMapper {
-
   private val topLevelColumnNameTranslator: Fields => Fields = TranslateColumnNames(Map(
     Csv.ubrn -> Api.ubrn,
     Csv.crn -> Api.crn,

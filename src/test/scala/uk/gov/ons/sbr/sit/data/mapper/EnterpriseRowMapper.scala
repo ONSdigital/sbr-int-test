@@ -11,7 +11,6 @@ import uk.gov.ons.sbr.sit.data.csv.CsvEnterprise.{ColumnNames => Csv}
 import uk.gov.ons.sbr.sit.data._
 
 object EnterpriseRowMapper extends RowMapper {
-
   private val turnoverColumnNameTranslator: Fields => Fields = TranslateColumnNames(Map(
     Csv.containedTurnover -> ApiTurnover.containedTurnover,
     Csv.standardTurnover -> ApiTurnover.standardTurnover,
