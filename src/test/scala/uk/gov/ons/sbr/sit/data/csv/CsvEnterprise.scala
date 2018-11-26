@@ -32,5 +32,5 @@ object CsvEnterprise {
   }
 
   def load(): InputStream =
-    ScenarioResource.getResource("DTrade_Dummy_Frame.csv")
+    ScenarioResource.getResource("SBR_ENT_OUT.csv")
 }
