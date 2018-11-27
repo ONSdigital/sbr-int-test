@@ -61,6 +61,6 @@ object ApiLocalUnit {
       Set(employees, employment)
 
     val mandatory: Set[ColumnName] =
-      Set(lurn, name, sic07, prn, region)
+      Set(lurn, name, sic07, employees, employment, prn, region)
   }
 }
