@@ -26,5 +26,5 @@ object CsvLocalUnit {
   }
 
   def load(): InputStream =
-    ScenarioResource.getResource("Complex_LUs.csv")
+    ScenarioResource.getResource("SBR_LU_OUT.csv")
 }
