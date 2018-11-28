@@ -18,7 +18,7 @@ object RowMapper extends LazyLogging {
   }
 
   private def logInvalidRows[K](rows: Map[K, Either[ErrorMessage, _]]): Unit =
-    if (rows.nonEmpty) logger.warn(s"Unable to map rows to JsValue [${rows.mkString}]")
+    if (rows.nonEmpty) logger.warn(s"Unable to map [${rows.size}] rows to JsValue [${rows.mkString(",")}]")
 
   private def flatten[K](rows: Map[K, Either[_, JsValue]]): Map[K, JsValue] =
     rows.flatMap { case (key, errorOrJson) =>
