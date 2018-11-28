@@ -15,6 +15,9 @@ abstract class AbstractIntegrationSpec[K](unitDescription: String) extends SbrCo
   def sampleUnits(): Map[K, JsValue]
   def urlFor(unitKey: K, period: String): String
 
+  implicit override val generatorDrivenConfig: PropertyCheckConfiguration =
+    PropertyCheckConfiguration(minSuccessful = 25)
+
   info("As a SBR user")
   info(s"I want to retrieve a $unitDescription")
   info(s"So that I can view the $unitDescription variables")
@@ -22,6 +25,8 @@ abstract class AbstractIntegrationSpec[K](unitDescription: String) extends SbrCo
   feature(s"a $unitDescription can be retrieved") {
     scenario("by key") { fixture =>
       val sample = sampleUnits()
+      logger.debug(s"[$unitDescription] sample size is [${sample.size}]")
+
       forAll (Gen.oneOf(sample.toSeq)) { case (unitKey, expectedJson) =>
         whenever(sample.contains(unitKey)) {
           val forUnit = urlFor(unitKey, fixture.targetPeriod)

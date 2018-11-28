@@ -27,8 +27,8 @@ We then use a [ScalaCheck](https://www.scalacheck.org/) __oneOf__ generator to r
 query the relevant API, and confirm that the returned payload matches the expected Json representation.
 
 [ScalaTest](http://www.scalatest.org/user_guide/generator_driven_property_checks) is used to drive the test,
-and via __forAll__ will repeat the test a number of times in accordance with the configured __PropertyCheckConfig__.
-By default, this value is 10.
+and via __forAll__ will repeat the test a number of times in accordance with the configured __PropertyCheckConfig__
+(by default, this value is 10).  We currently configure this to be 25.
 
 
 ### Running Locally
