@@ -10,9 +10,10 @@ pipeline {
     libraries {
         lib('jenkins-pipeline-shared')
     }
-     environment {
+    environment {
         SVC_NAME = "sbr-int-test"
         ORG = "SBR"
+        ENV_NAME = "dev"
     }
     options {
         skipDefaultCheckout()
@@ -25,7 +26,12 @@ pipeline {
         stage('Checkout') {
             agent { label 'download.jenkins.slave' }
             steps {
-                checkout scm        
+                deleteDir()
+                checkout scm
+                dir('config') {
+                    checkout poll: false, scm:[$class: 'GitSCM', branches: [[name: 'dev-int-test']], userRemoteConfigs: [[credentialsId: 'JenkinsSBR__gitlab', url: "${GITLAB_URL}/StatBusReg/${env.SVC_NAME}.git"]]]
+                }
+                sh "cp -v config/${env.ENV_NAME}/application.conf src/test/resources"
                 script {
                     buildInfo.name = "${SVC_NAME}"
                     buildInfo.number = "${BUILD_NUMBER}"
