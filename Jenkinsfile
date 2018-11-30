@@ -57,7 +57,7 @@ pipeline {
         }
 
         stage('Test: Integration'){
-            agent { label "build.${agentSbtVersion}" }
+            agent { label "test.${agentSbtVersion}" }
             steps {
                 unstash name: 'Checkout'
                 sh 'sbt test'
