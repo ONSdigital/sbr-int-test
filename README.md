@@ -4,13 +4,12 @@
 This project houses integration tests for Statistical Business Register (SBR).
 
 The current focus is on testing APIs ([sbr-control-api](https://github.com/ONSdigital/sbr-control-api) and
-[sbr-api](https://github.com/ONSdigital/sbr-control-api)) against a known dataset.
+[sbr-api](https://github.com/ONSdigital/sbr-control-api)) against a known dataset (comprising dummy records).
 
 The longer-term goal is to feed a known dataset into the very beginning of the data pipeline process,
 testing the output via the APIs.  When this is achieved the tests will have become full end-to-end tests.
 
 ### Overview
-
 This project contains:
 * scripts to populate a target HBase database with a known dataset
 * API tests that establish whether or not client requests against the known dataset achieve the expected results
@@ -19,7 +18,6 @@ This project contains:
 _TODO: provide overview of scripts_
 
 ##### Testing the APIs
-
 The test dataset is located at [src/test/resources/uk/gov/ons/sbr/sit/data/csv](https://github.com/ONSdigital/sbr-int-test/tree/master/src/test/resources/uk/gov/ons/sbr/sit/data/csv).
 This is parsed, and the expected Json representation of each entity is derived.  Any invalid rows are discarded.
 
@@ -28,7 +26,7 @@ query the relevant API, and confirm that the returned payload matches the expect
 
 [ScalaTest](http://www.scalatest.org/user_guide/generator_driven_property_checks) is used to drive the test,
 and via __forAll__ will repeat the test a number of times in accordance with the configured __PropertyCheckConfig__
-(by default, this value is 10).  We currently configure this to be 25.
+(by default, this value is 10).  We currently configure this value to be 25.
 
 
 ### Running Locally
@@ -55,12 +53,20 @@ and via __forAll__ will repeat the test a number of times in accordance with the
 
    ```sbt clean test``` _(in this project directory)_
 
-   Note that your project _src/test/resources/application.conf_ must configure _api.sbr.control_ to point to the local
+   Note that your project _src/test/resources/reference.conf_ must configure _api.sbr.control_ to point to the local
    server started earlier.  This is the default configuration.
 
 
-### License
+### Continuous Integration
+The intention is for these tests to be executed against a remote environment that has been populated with the test
+dataset.
 
+In order to achieve this, the continuous integration script should copy a suitable application.conf file into
+[src/test/resources](https://github.com/ONSdigital/sbr-int-test/tree/master/src/test/resources).  Any values 
+specified in this file will naturally override any values configured in this project's reference.conf.
+
+
+### License
 Copyright © 2018, Office for National Statistics (https://www.ons.gov.uk)
 
 Released under MIT license, see [LICENSE](./LICENSE) for details.
