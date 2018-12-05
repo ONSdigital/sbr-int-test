@@ -18,6 +18,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '30', artifactNumToKeepStr: '30'))
         timeout(time: 1, unit: 'HOURS')
         ansiColor('xterm')
+        timestamps()
     }
     agent { label 'download.jenkins.slave' }
     stages {
